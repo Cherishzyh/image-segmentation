@@ -39,20 +39,20 @@ def u_net(input_shape):
     a2 = Conv1(p1, 32)
     p2 = MaxPooling2D((2, 2))(a2)
     a3 = Conv1(p2, 64)
-    p3 = MaxPooling2D((2, 2))(a3)
-    a4 = Conv1(p3, 128)
-    p4 = MaxPooling2D((2, 2))(a4)
-    a5 = Conv1(p4, 256)
-    b1 = Conv2(a5, a4, 128)
-    b2 = Conv2(b1, a3, 64)
-    b3 = Conv2(b2, a2, 32)
-    b4 = Conv2(b3, a1, 16)
+    b1 = Conv2(a3, a2, 32)
+    b2 = Conv2(b1, a1, 16)
 
-    outputs = Conv2D(1, (1, 1), activation='sigmoid')(b4)
+    outputs = Conv2D(1, (1, 1), activation='sigmoid')(b2)
 
     model = Model(inputs, outputs)
     return model
 
 
+def test_model():
+    model = u_net((180, 180, 1))
+    print(model.summary())
+
+
+# test_model()
 
 
