@@ -29,12 +29,12 @@ with open(os.path.join(store_folder, 'model.yaml'), "w") as yaml_file:
 callbacks = [
     ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=20, mode='min'),
     EarlyStopping(monitor='val_loss', patience=100, mode='min'),
-    ModelCheckpoint(monitor='val_loss', save_best_only=True, mode='min')
+    ModelCheckpoint(filepath=os.path.join(store_folder, 'best_weights.h5'), monitor='val_loss', save_best_only=True, mode='min', period=1)
 ]
 
-
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+from keras.optimizers import Adam
+model.compile(loss='binary_crossentropy', optimizer=Adam(0.001), metrics=['accuracy'])
 history = model.fit(x=training_data, y=training_label, epochs=10000, batch_size=32, verbose=1,
                     validation_data=(validation_data, validation_label), callbacks=callbacks)
 
-model.save_weights(os.path.join(store_folder, 'weights.h5'))
+model.save_weights(os.path.join(store_folder, 'last_weights.h5'))
