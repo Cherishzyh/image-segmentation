@@ -13,5 +13,5 @@ def show_train_history(history, train, validation):
 
 # load the result
 
-show_train_history(history, 'acc', 'val_acc')
-show_train_history(history, 'loss', 'val_loss')
+# show_train_history(history, 'acc', 'val_acc')
+# show_train_history(history, 'loss', 'val_loss')

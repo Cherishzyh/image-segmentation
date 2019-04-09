@@ -29,13 +29,14 @@ def GeneratorData(data_folder, batch_size):
 
 
 def test_GeneratorData():
-    data_folder = r'H:/Input_1_Ouput_1/training'
+    data_folder = r'H:/data/Input_1_Output_1/testing'
     batch_size = 12
     for image_list, label_list in GeneratorData(data_folder, batch_size):
         for i in range(batch_size):
             plt.subplot(batch_size/4, 4, i+1)
             plt.imshow(image_list[i, :, :, 0], cmap='gray')
         plt.show()
+
 
 # test_GeneratorData()
 

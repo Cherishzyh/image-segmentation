@@ -1,7 +1,9 @@
-import h5py
-import numpy as np
-import os
+from keras.models import model_from_yaml
+from data import GetData
 
-file_path = 'H:/Input_1_Output_1/testing/data1.h5'
-f = h5py.File(file_path, 'r')
-f.keys()
+
+
+yaml_file = open(r'H:/data/SaveModel/model.yaml')
+loaded_model = yaml_file.read()
+yaml_file.close()
+model = model_from_yaml(loaded_model)
