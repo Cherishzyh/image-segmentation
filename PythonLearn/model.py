@@ -3,6 +3,7 @@ from keras.models import Model
 from keras.layers import Input, BatchNormalization, Add, Activation, AveragePooling2D, Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose, Concatenate, concatenate
 
+
 # some things before def
 # for Google net
 def Conv2d_BN(x, nb_filter, kernel_size, padding='same', strides=(1, 1), name=None):

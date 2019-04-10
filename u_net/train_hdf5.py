@@ -1,7 +1,8 @@
 from u_net import u_net
 from data import GetData
-from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from filepath import train_data_folder, validation_data_folder, store_folder
+from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+from keras.optimizers import Adam
 import os
 
 
@@ -29,7 +30,7 @@ callbacks = [
                     save_best_only=True, mode='min', period=1)
 ]
 
-from keras.optimizers import Adam
+
 model.compile(loss='binary_crossentropy', optimizer=Adam(0.001), metrics=['accuracy'])
 history = model.fit(x=training_data, y=training_label, epochs=1, batch_size=1, verbose=1,
                     validation_data=(validation_data, validation_label), callbacks=callbacks)
