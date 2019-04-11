@@ -1,4 +1,4 @@
-from keras.backend import sum, flatten
+from keras.backend import flatten, sum
 
 
 #  metric function and loss function
@@ -15,5 +15,6 @@ def dice_coef_loss(y_true, y_pred):
     return 1 - dice_coef(y_true, y_pred)
 
 
-# load model
-# model = load_model(weight_path, custom_objects={'dice_coef_loss': dice_coef_loss, 'dice_coef': dice_coef})
+
+
+

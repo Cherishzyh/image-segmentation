@@ -3,7 +3,7 @@ from data import GetData
 from filepath import train_data_folder, validation_data_folder, store_folder
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam
-from dice import dice_coef_loss
+from dice_loss import dice_coef_loss
 from visualization import show_train_history
 import os
 

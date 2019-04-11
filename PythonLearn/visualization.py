@@ -11,7 +11,6 @@ def show_train_history(history, train, validation):
     plt.legend(['train','validation'],loc='upper left')
     plt.show()
 
-# load the result
 
 # show_train_history(history, 'acc', 'val_acc')
 # show_train_history(history, 'loss', 'val_loss')
