@@ -3,6 +3,8 @@ from data import GetData
 from filepath import train_data_folder, validation_data_folder, store_folder
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam
+from dice import dice_coef_loss
+from visualization import show_train_history
 import os
 
 
@@ -31,8 +33,9 @@ callbacks = [
 ]
 
 
-model.compile(loss='binary_crossentropy', optimizer=Adam(0.001), metrics=['accuracy'])
-history = model.fit(x=training_data, y=training_label, epochs=1, batch_size=1, verbose=1,
+model.compile(loss=dice_coef_loss, optimizer=Adam(0.001), metrics=['accuracy'])
+history = model.fit(x=training_data, y=training_label, epochs=1000, batch_size=12, verbose=1,
                     validation_data=(validation_data, validation_label), callbacks=callbacks)
 
 model.save_weights(os.path.join(store_folder, 'last_weights.h5'))
+show_train_history(history, 'loss', 'val_loss')

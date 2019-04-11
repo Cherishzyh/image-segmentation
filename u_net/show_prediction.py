@@ -9,7 +9,7 @@ image_test, label_test = GetData(test_data_folder)
 
 # load model
 model = ReadModel(model_path, last_weights_path)
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss=dice_coef_loss, optimizer='adam', metrics=['accuracy'])
 
 # evaluate loaded model on test data
 # score = model.evaluate(x=image_test, y=label_test)
@@ -17,8 +17,6 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 
 # prediction loaded model on test data
 prediction = model.predict(image_test)
-dice_loss = dice_coef_loss(label_test.astype(np.float64), prediction)
-print(dice_loss)
 
 # for i in range(len(prediction)):
 #     plt.contour(label_test[i, :, :, 0], colors='r')
