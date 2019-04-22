@@ -53,6 +53,6 @@ def test_model():
     print(model.summary())
 
 
-# test_model()
+test_model()
 
 

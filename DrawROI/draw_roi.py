@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from generator import GeneratorData
+from SaveAndLoad.generator import GeneratorData
 
 data_folder = 'H:/data/Input_1_Output_1/testing'
 batch_size = 1

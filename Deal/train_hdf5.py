@@ -1,10 +1,10 @@
-from u_net import u_net
-from data import GetData
-from filepath import train_data_folder, validation_data_folder, store_folder
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam
-from dice_loss import dice_coef_loss
-from visualization import show_train_history
+from UNet.u_net import u_net
+from SaveAndLoad.data import GetData
+from filepath import train_data_folder, validation_data_folder, store_folder
+from UNet.dice_loss import dice_coef_loss
+from Visualization.visualization import show_train_history
 import os
 
 
@@ -12,7 +12,8 @@ training_data, training_label = GetData(train_data_folder)
 validation_data, validation_label = GetData(validation_data_folder)
 
 # training_data.shape = (number, row, col, channel)
-model = u_net(training_data.shape[1:])
+input_shape = training_data.shape[1:]
+model = u_net(input_shape)
 print(model.summary())
 
 '''Save model'''

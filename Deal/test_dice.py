@@ -1,5 +1,5 @@
-from data import GetData
-from read_model import ReadModel
+from SaveAndLoad.data import GetData
+from SaveAndLoad.read_model import ReadModel
 from filepath import test_data_folder, model_path, last_weights_path, prediction_store_folder
 import numpy as np
 
