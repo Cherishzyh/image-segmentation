@@ -1,4 +1,11 @@
 from keras.models import model_from_yaml
+import os
+
+
+def SaveModel(model, store_folder):
+    model_yaml = model.to_yaml()
+    with open(os.path.join(store_folder, 'model.yaml'), "w") as yaml_file:
+        yaml_file.write(model_yaml)
 
 
 def ReadModel(model_path, weights_path):

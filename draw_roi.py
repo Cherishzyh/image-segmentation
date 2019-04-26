@@ -1,11 +1,8 @@
 import matplotlib.pyplot as plt
+from ImageSegmentation.data import GeneratorData
+from filepath import data_folder
 
-from SaveAndLoad.generator import GeneratorData
-
-data_folder = 'H:/data/Input_1_Output_1/testing'
-batch_size = 1
-GeneratorData(data_folder, batch_size)
-
+batch_size = 12
 for image_list, label_list in GeneratorData(data_folder, batch_size):
     if batch_size == 1:
         for i in range(len(image_list)):

@@ -1,10 +1,11 @@
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.optimizers import Adam
-from UNet.u_net import u_net
-from SaveAndLoad.data import GetData
+from u_net import u_net
+from data import GetData
 from filepath import train_data_folder, validation_data_folder, store_folder
-from UNet.dice_loss import dice_coef_loss
-from Visualization.visualization import show_train_history
+from loss_function import dice_coef_loss
+from visualization import show_train_history
+from saveandload import SaveModel
 import os
 
 
@@ -16,12 +17,9 @@ input_shape = training_data.shape[1:]
 model = u_net(input_shape)
 print(model.summary())
 
-'''Save model'''
-model_yaml = model.to_yaml()
-with open(os.path.join(store_folder, 'model.yaml'), "w") as yaml_file:
-    yaml_file.write(model_yaml)
+SaveModel(model, store_folder)
 
-#callbacks
+# callbacks
 # 步长，初始设置为1e-3，如果validation loss 连续20代不下降，则步长变为原来的0.5.
 # EarlyStop，如果validation loss 连续100代不下降，则终止
 # CheckPoint，只保存最优模型的权重（对应Validation Loss最小的情况）
