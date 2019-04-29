@@ -21,7 +21,7 @@ for layer in model.layers:
 #     plt.imshow(result[5, :, :, 0], cmap='gray')
 
 for i in range(len(model.layers)):
-    picture_path = r'/home/zhangyihong/Documents/Input_1_Output_1/SaveModel/model1/picture'
+    picture_path = r'H:/data/SaveModel/model/picture'
 
     picture_path = os.path.join(picture_path, layer_name[i+1])
     os.mkdir(picture_path)
