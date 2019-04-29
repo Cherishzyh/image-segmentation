@@ -48,32 +48,10 @@ def u_net(input_shape):
     return model
 
 
-def UNetHidderLayers(input_shape):
-    inputs = Input(input_shape)
-    outputs = []
-
-    a1 = Conv1(inputs, 16)
-    p1 = MaxPooling2D((2, 2))(a1)
-    a2 = Conv1(p1, 32)
-    p2 = MaxPooling2D((2, 2))(a2)
-    a3 = Conv1(p2, 64)
-    outputs.append(a3)
-    b1 = Conv2(a3, a2, 32)
-    outputs.append(b1)
-    b2 = Conv2(b1, a1, 16)
-    outputs.append(b2)
-    b3 = Conv2D(1, (1, 1), activation='sigmoid')(b2)
-    outputs.append(b3)
-
-    model = Model(inputs, outputs)
-    return model
-
-
 def test_model():
-    model = UNetHidderLayers((180, 180, 1))
-    print(model.summary())
+    model = u_net((180, 180, 1))
+    model.summary()
 
-
-test_model()
+# test_model()
 
 

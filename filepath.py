@@ -12,6 +12,7 @@ store_folder = r'H:/data/SaveModel/model'
 model_path = r'H:/data/SaveModel/model/model.yaml'
 last_weights_path = r'H:/data/SaveModel/model/last_weights.h5'
 best_weights_path = r'H:/data/SaveModel/model/best_weights.h5'
+picture_path = r'H:/data/SaveModel/model/picture'
 
 # data_folder = r'/home/zhangyihong/Documents/Input_1_Output_1/'
 
