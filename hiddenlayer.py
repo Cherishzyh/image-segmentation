@@ -1,14 +1,10 @@
 from keras import backend as K
-from data import GetData
 import matplotlib.pyplot as plt
 import os
 
 
-def GetFeatureMap(model, test_data_folder, picture_path):
+def GetFeatureMap(model, image_test, picture_path):
     K.set_image_data_format('channels_last')
-
-    image_test, label_test = GetData(test_data_folder)
-    image_test = image_test[[0], ...]
 
     layer_name = []
     for layer in model.layers:
@@ -40,8 +36,12 @@ def GetFeatureMap(model, test_data_folder, picture_path):
             plt.axis('off')
             plt.imsave(one_specific_layer_path, layer_output[0, :, :], format="png", cmap='gray')
 
+    return 0
 
+# from data import GetData
 # from saveandload import ReadModel
 # from filepath import test_data_folder, model_path, best_weights_path, picture_path
+# image_test, label_test = GetData(test_data_folder)
+# image_test = image_test[[0], ...]
 # model = ReadModel(model_path, best_weights_path)
-# GetFeatureMap(model, test_data_folder, picture_path)
+# GetFeatureMap(model, image_test, picture_path)
