@@ -5,6 +5,9 @@ import numpy as np
 from MeDIT.DataAugmentor import DataAugmentor2D, AugmentParametersGenerator
 import matplotlib.pyplot as plt
 import os
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from numpy import argmax
+from keras.utils import to_categorical
 
 def AugmentTrain(train_folder, batch_size):
     file_list = os.listdir(train_folder)
@@ -32,21 +35,23 @@ def AugmentTrain(train_folder, batch_size):
         for j in range(t2.shape[-1]):
             t2_slice = t2[..., j]
             roi_slice = roi[..., j]
+            roi_onehot_slice = to_categorical(roi_slice)
             image_list.append(t2_slice)
-            label_list.append(roi_slice)
+            label_list.append(roi_onehot_slice)
             augment_generator.RandomParameters(param_dict)
             transform_param = augment_generator.GetRandomParametersDict()
             augment_t2 = augmentor.Execute(t2_slice, aug_parameter=transform_param, interpolation_method='linear')
             augment_roi = augmentor.Execute(roi_slice, aug_parameter=transform_param, interpolation_method='linear')
-            plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
-            plt.show()
+            augment_onehot_roi = to_categorical(augment_roi)
+            # plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
+            # plt.show()
 
             # add data into list
             image_list.append(augment_t2)
-            label_list.append(augment_roi)
+            label_list.append(augment_onehot_roi)
 
             if len(image_list) >= batch_size:
-                return np.asarray(image_list), np.asarray(label_list)
+                yield np.asarray(image_list), np.asarray(label_list)
 
 def AugmentValidation(validation_folder, batch_size):
     file_list = os.listdir(validation_folder)
@@ -65,8 +70,9 @@ def AugmentValidation(validation_folder, batch_size):
         for j in range(t2.shape[-1]):
             t2_slice = t2[..., j]
             roi_slice = roi[..., j]
+            roi_onehot_slice = to_categorical(roi_slice)
             image_list.append(t2_slice)
-            label_list.append(roi_slice)
+            label_list.append(roi_onehot_slice)
 
             if len(image_list) >= batch_size:
                 yield np.asarray(image_list), np.asarray(label_list)
@@ -75,7 +81,6 @@ def AugmentValidation(validation_folder, batch_size):
 
 # data_folder = r'H:/data/TZ roi/data/Train'
 # batch_size = 16
-# AugmentTrain(data_folder, batch_size)
+# AugmentValidation(data_folder, batch_size)
 # 数据还没有裁剪
-
 

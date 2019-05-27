@@ -3,7 +3,7 @@
 2. 如何在训练过程中，做Augmentation
 '''
 
-#1.
+#1.数据扩增
 def AugmentScript():
     from MeDIT.SaveAndLoad import LoadNiiData
     from MeDIT.Visualization import Imshow3DArray, DrawBoundaryOfBinaryMask
@@ -11,10 +11,10 @@ def AugmentScript():
     import numpy as np
     import time
 
-    t2_image, _, t2 = LoadNiiData(r'C:\Users\yangs\Desktop\TZ roi1\CHA YONG BAO\t2.nii', dtype=np.float32)
-    roi_image, _, roi = LoadNiiData(r'C:\Users\yangs\Desktop\TZ roi1\CHA YONG BAO\t2_roi_hy.nii', dtype=np.uint8)
+    t2_image, _, t2 = LoadNiiData(r'H:/data/TZ roi/BIAN ZHONG BEN/t2.nii', dtype=np.float32)
+    roi_image, _, roi = LoadNiiData(r'H:/data/TZ roi/BIAN ZHONG BEN/prostate_roi_TrumpetNet.nii', dtype=np.uint8)
 
-    # Imshow3DArray(t2, ROI=roi)
+    Imshow3DArray(t2, ROI=roi)
 
     t2_slice = t2[..., 10]
     roi_slice = roi[..., 10]
@@ -37,9 +37,10 @@ def AugmentScript():
 
         augment_t2 = augmentor.Execute(t2_slice, aug_parameter=transform_param, interpolation_method='linear')
         augment_roi = augmentor.Execute(roi_slice, aug_parameter=transform_param, interpolation_method='linear')
-        plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
-        plt.show()
+        # plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
+        # plt.show()
 
 AugmentScript()
 
-def train():
+# 2.网络训练
+
