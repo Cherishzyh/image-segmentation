@@ -42,4 +42,3 @@ def AugmentScript():
 
 AugmentScript()
 
-def train():
