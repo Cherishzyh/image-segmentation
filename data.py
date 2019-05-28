@@ -51,4 +51,3 @@ def GeneratorData(data_folder, batch_size):
 
 
 
-

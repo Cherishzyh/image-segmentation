@@ -38,3 +38,5 @@ history = model.fit(x=training_data, y=training_label, epochs=1000, batch_size=1
 
 model.save_weights(os.path.join(store_folder, 'last_weights.h5'))
 show_train_history(history, 'loss', 'val_loss')
+
+
