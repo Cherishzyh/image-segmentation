@@ -7,7 +7,7 @@ def show_train_history(history, train, validation):
     plt.title('Train History')
     plt.ylabel(train)
     plt.xlabel('Epoch')
-    plt.legend(['train','validation'],loc='upper left')
+    plt.legend(['train', 'validation'], loc='upper left')
     plt.show()
 
 # load the result

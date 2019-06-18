@@ -9,10 +9,10 @@ prediction_store_folder = r'H:/data/SaveModel/model'
 
 store_folder = r'H:/data/SaveModel/model'
 
-model_path = r'H:/data/SaveModel/model/model.yaml'
-last_weights_path = r'H:/data/SaveModel/model/last_weights.h5'
-best_weights_path = r'H:/data/SaveModel/model/best_weights.h5'
-picture_path = r'H:/data/SaveModel/model/picture'
+model_path = r'H:/data/Input_1_Output_1/SaveModel/model/model.yaml'
+last_weights_path = r'H:/data/Input_1_Output_1/SaveModel/model/last_weights.h5'
+best_weights_path = r'H:/data/Input_1_Output_1/SaveModel/model/best_weights.h5'
+picture_path = r'H:/data/Input_1_Output_1/SaveModel/model/picture'
 
 # data_folder = r'/home/zhangyihong/Documents/Input_1_Output_1/'
 

@@ -21,5 +21,3 @@ def ReadModel(model_path, weights_path):
     return model
 
 
-
-

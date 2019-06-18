@@ -4,10 +4,10 @@ from keras.optimizers import Adam
 from loss_function import dice_coef_loss
 import os
 
-train_folder = r'H:/data/TZ roi/data/Train'
-validation_folder = r'H:/data/TZ roi/data/Validation'
+train_folder = r'H:\data\data\train'
+validation_folder = r'H:\data\data\validation'
 store_folder = r'H:/data/TZ roi/savemodel'
-input_shape = [160, 160, 1]
+input_shape = [200, 200, 1]
 batch_size = 16
 
 if not os.path.exists(store_folder):
