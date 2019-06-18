@@ -46,8 +46,7 @@ def GeneratorData(data_folder, batch_size):
                 image_list = []
                 label_list = []
 
-
-
-
+# data_folder = r'H:/data/TZ roi/h5/train'
+# GetData(data_folder)
 
 

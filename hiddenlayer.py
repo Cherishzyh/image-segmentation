@@ -44,10 +44,13 @@ def SaveFeatureMap(model, one_data, feature_map_root_folder):
 
         # get feature map in i+1 layer
         get_layer_output = K.function([model.layers[0].input], [model.layers[layer_index].output])
+        # get_layer_output = K.function([one_data[0], one_data[1], one_data[2]], [model.layers[layer_index].output])
 
         # get the feature map of a picture
         output_layer_list = get_layer_output([one_data])
         output_layer = output_layer_list[0]
+        # output_layer_list = get_layer_output(one_data)
+        # output_layer = output_layer_list
 
         # 保存该隐含层中的每个channel
         for k in range(output_layer.shape[-1]):
@@ -59,10 +62,19 @@ def SaveFeatureMap(model, one_data, feature_map_root_folder):
             plt.imsave(one_specific_layer_path, layer_output[0, :, :], format="png", cmap='gray')
 
 
-# from data import GetData
-# from saveandload import ReadModel
-# from filepath import test_data_folder, model_path, best_weights_path, picture_path
-# image_test, label_test = GetData(test_data_folder)
-# image_test = image_test[[0], ...]
-# model = ReadModel(model_path, best_weights_path)
-# GetFeatureMap(model, image_test, picture_path)
+# test_data_folder = r'H:/data/TZ roi/data/Validation/Chen ren geng/t2.nii'
+# picture_path = r'H:/data/TZ roi/data/Validation/Chen ren geng/hidden'
+import numpy as np
+from saveandload import ReadModel
+from data import GetData
+imagepath = r'H:/data/TZ roi/h5/validation'
+path = r'C:/Users/I/Desktop/hidden'
+model_path = r'H:/SuccessfulModel/ProstateSegmentTrumpetNet/model.yaml'
+best_weights_path = r'H:/SuccessfulModel/ProstateSegmentTrumpetNet/weights.h5'
+image_array, _ = GetData(imagepath)
+inputs = []
+inputs.append(image_array[[17], ...])
+inputs.append(image_array[[18], ...])
+inputs.append(image_array[[19], ...])
+model = ReadModel(model_path, best_weights_path)
+SaveFeatureMap(model, inputs, path)

@@ -5,9 +5,10 @@ import numpy as np
 from MeDIT.DataAugmentor import DataAugmentor2D, AugmentParametersGenerator
 import matplotlib.pyplot as plt
 import os
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-from numpy import argmax
 from keras.utils import to_categorical
+import h5py
+
+'''数据预处理流程：.nii→改分辨率→保存为.h5→进行数据增强，图片剪裁，onehot编码→generator'''
 
 def AugmentTrain(train_folder, batch_size):
     file_list = os.listdir(train_folder)
@@ -16,12 +17,9 @@ def AugmentTrain(train_folder, batch_size):
     for i in range(len(file_list)):
         # path
         data_path = os.path.join(train_folder, file_list[i])
-        t2_path = os.path.join(data_path, 't2.nii')
-        roi_path = os.path.join(data_path, 't2_CG/t2_PZ_roi.nii.gz')
-
-        # Load data
-        t2_image, _, t2 = LoadNiiData(t2_path, dtype=np.float32)
-        roi_image, _, roi = LoadNiiData(roi_path, dtype=np.uint8)
+        h5_file = h5py.File(data_path, 'r')
+        image = np.asarray(h5_file['input_0'], dtype=np.float32)
+        label = np.asarray(h5_file['output_0'], dtype=np.uint8)
 
         # augmentation param
         param_dict = {'stretch_x': 0.1, 'stretch_y': 0.1, 'shear': 0.1, 'rotate_z_angle': 20, 'horizontal_flip': True}
@@ -31,56 +29,53 @@ def AugmentTrain(train_folder, batch_size):
 
         # 2D的数据增强
         augmentor = DataAugmentor2D()
+        augment_generator.RandomParameters(param_dict)
+        transform_param = augment_generator.GetRandomParametersDict()
+        augment_t2 = augmentor.Execute(image, aug_parameter=transform_param, interpolation_method='linear')
+        augment_roi = augmentor.Execute(label, aug_parameter=transform_param, interpolation_method='linear')
 
-        for j in range(t2.shape[-1]):
-            t2_slice = t2[..., j]
-            roi_slice = roi[..., j]
-            roi_onehot_slice = to_categorical(roi_slice)
-            image_list.append(t2_slice)
-            label_list.append(roi_onehot_slice)
-            augment_generator.RandomParameters(param_dict)
-            transform_param = augment_generator.GetRandomParametersDict()
-            augment_t2 = augmentor.Execute(t2_slice, aug_parameter=transform_param, interpolation_method='linear')
-            augment_roi = augmentor.Execute(roi_slice, aug_parameter=transform_param, interpolation_method='linear')
-            augment_onehot_roi = to_categorical(augment_roi)
-            # plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
-            # plt.show()
+        # cut
+        if np.shape(augment_t2) == (440, 440):
+            cropImage = image[100:340, 100:340]
+            cropRoi = label[100:340, 100:340]
+            cropaugmentImage = augment_t2[100:340, 100:340]
+            cropaugmentRoi = augment_roi[100:340, 100:340]
 
-            # add data into list
-            image_list.append(augment_t2)
-            label_list.append(augment_onehot_roi)
+        else:
+            cropImage = image[60:300, 60:300]
+            cropRoi = label[60:300, 60:300]
+            cropaugmentImage = augment_t2[60:300, 60:300]
+            cropaugmentRoi = augment_roi[60:300, 60:300]
 
-            if len(image_list) >= batch_size:
-                yield np.asarray(image_list), np.asarray(label_list)
+        # one_hot
+        roi_onehot = to_categorical(cropRoi)
+        augment_roi_onehot = to_categorical(cropaugmentRoi)
 
-def AugmentValidation(validation_folder, batch_size):
-    file_list = os.listdir(validation_folder)
-    image_list = []
-    label_list = []
-    for i in range(len(file_list)):
-        # path
-        data_path = os.path.join(validation_folder, file_list[i])
-        t2_path = os.path.join(data_path, 't2.nii')
-        roi_path = os.path.join(data_path, 't2_CG/t2_PZ_roi.nii.gz')
+        # show
+        # plt.imshow(np.concatenate((Normalize01(cropImage), Normalize01(cropRoi)), axis=1), cmap='gray')
+        # plt.show()
+        # plt.imshow(np.concatenate((Normalize01(cropaugmentImage), Normalize01(cropaugmentRoi)), axis=1), cmap='gray')
+        # plt.show()
 
-        # Load data
-        t2_image, _, t2 = LoadNiiData(t2_path, dtype=np.float32)
-        roi_image, _, roi = LoadNiiData(roi_path, dtype=np.uint8)
+        reshape = (240, 240, 1)
+        cropImage = cropImage.reshape(reshape)
+        cropaugmentImage = cropaugmentImage.reshape(reshape)
 
-        for j in range(t2.shape[-1]):
-            t2_slice = t2[..., j]
-            roi_slice = roi[..., j]
-            roi_onehot_slice = to_categorical(roi_slice)
-            image_list.append(t2_slice)
-            label_list.append(roi_onehot_slice)
+        # add data into list
+        image_list.append(cropImage)
+        label_list.append(roi_onehot)
 
-            if len(image_list) >= batch_size:
-                yield np.asarray(image_list), np.asarray(label_list)
+        image_list.append(cropaugmentImage)
+        label_list.append(augment_roi_onehot)
 
 
+        if len(image_list) >= batch_size:
+            return np.asarray(image_list), np.asarray(label_list)
+            # image_list = []
+            # label_list = []
 
-# data_folder = r'H:/data/TZ roi/data/Train'
-# batch_size = 16
-# AugmentValidation(data_folder, batch_size)
-# 数据还没有裁剪
+
+path = r'H:\data\data\validation'
+AugmentTrain(path, batch_size=16)
+
 
