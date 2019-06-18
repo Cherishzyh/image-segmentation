@@ -7,7 +7,7 @@ from MeDIT.SaveAndLoad import LoadNiiData
 def GetPZ(t2CG_array, t2WG_array):
     import matplotlib.pyplot as plt
     PZ = t2WG_array - t2CG_array
-    PZ[np.where(PZ == 255)] = 0
+    PZ[np.where(PZ == -1)] = 0
     CG = t2CG_array
     CG[np.where(CG == 1)] = 2
     ROI = CG + PZ
