@@ -50,14 +50,14 @@ def showh5data(filepath):
         # h5_file.close()
 
 
-def ReResolution(datafolder):
-    file_list = os.listdir(datafolder)
+def ReResolution(data_folder):
+    file_list = os.listdir(data_folder)
     for i in range(len(file_list)):
         # LoadPath
-        t2_path = os.path.join(datafolder, file_list[i] + '/t2.nii')
-        roi_path = os.path.join(datafolder, file_list[i] + '/t2_CG/t2_ROI_roi.nii.gz')
-        t2_resample_path = os.path.join(datafolder, file_list[i] + '/t2_resample.nii')
-        roi_resample_path = os.path.join(datafolder, file_list[i] + '/t2_CG/t2_resample_roi.nii.gz')
+        t2_path = os.path.join(data_folder, file_list[i] + '/t2.nii')
+        roi_path = os.path.join(data_folder, file_list[i] + '/t2_CG/t2_ROI_roi.nii.gz')
+        t2_resample_path = os.path.join(data_folder, file_list[i] + '/t2_resample.nii')
+        roi_resample_path = os.path.join(data_folder, file_list[i] + '/t2_CG/t2_resample_roi.nii.gz')
         t2_image, _, t2 = LoadNiiData(t2_path, dtype=np.float32)
         roi_image, _, roi = LoadNiiData(roi_path, dtype=np.uint8)
         resampler = Resampler()
@@ -67,14 +67,13 @@ def ReResolution(datafolder):
         print(i)
 
 
-def ShowHist(dataarray, title):
+def TestShowHist(dataarray, title):
     plt.hist(dataarray.flatten(), bins=50)
     plt.title(title)
     plt.show()
     return 0
 
-
-def ShowRoiHist(data_folder):
+def TestShowRoiHist(data_folder):
     file_list = os.listdir(data_folder)
     for i in range(len(file_list)):
         # path
@@ -89,8 +88,7 @@ def ShowRoiHist(data_folder):
         ShowHist(roi, 'roi')
         ShowHist(roi_resample, 'roi_resample_try')
 
-
-def ShowRoiImage(data_folder):
+def TestShowRoiImage(data_folder):
     file_list = os.listdir(data_folder)
     for i in range(len(file_list)):
         print(i)
