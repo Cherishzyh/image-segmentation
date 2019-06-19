@@ -22,10 +22,10 @@ validation_generator = AugmentTrain(validation_folder, batch_size)
 
 
 # Model
-from u_net import u_net
+from u_net import UNet
 from saveandload import SaveModel
 
-model = u_net(input_shape)
+model = UNet(input_shape)
 SaveModel(model, store_folder)
 
 callbacks = [

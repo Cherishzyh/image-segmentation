@@ -1,57 +1,60 @@
 from keras.models import Model
-from keras.layers import Input, BatchNormalization, Concatenate, Activation
-from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose
+from keras.layers import Input, BatchNormalization, Concatenate, PReLU
+from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose, UpSampling2D
+import numpy as np
 
 
-def Conv1(inputs, num_filters):
-    x = Conv2D(num_filters, kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(inputs)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
+def Encoding(inputs, filters=64, blocks=4):
+    outputs = []
+    x = inputs
+    for index in range(blocks):
+        x = Conv2D(filters * np.power(2, index), kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
+        x = BatchNormalization()(x)
+        x = PReLU()(x)
 
-    x = Conv2D(num_filters, kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
+        x = Conv2D(filters * np.power(2, index), kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
+        x = BatchNormalization()(x)
+        x = PReLU()(x)
+
+        if index != blocks - 1:
+            outputs.append(x)
+            x = MaxPooling2D((2, 2))(x)
+
+    return x, outputs
+
+
+def Decoding(inputs_1, inputs_2, filters=64, blocks=4):
+    x = inputs_1
+    for index in np.arange(blocks - 2, -1, -1):
+        x = Conv2DTranspose(filters * np.power(2, index), kernel_size=(2, 2), strides=(2, 2), padding='same')(x)
+        x = Concatenate(axis=3)([x, inputs_2[index]])
+
+        x = Conv2D(filters * np.power(2, index), kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
+        x = BatchNormalization()(x)
+        x = PReLU()(x)
+
+        x = Conv2D(filters * np.power(2, index), kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
+        x = BatchNormalization()(x)
+        x = PReLU()(x)
 
     return x
 
 
-def Conv2(inputs_1, inputs_2, num_filters):
-    x = Conv2DTranspose(num_filters, kernel_size=(2, 2), strides=(2, 2), padding='same')(inputs_1)
-    x = Concatenate(axis=3)([x, inputs_2])
-
-    x = Conv2D(num_filters, kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
-
-    x = Conv2D(num_filters, kernel_size=(3, 3), strides=(1, 1), padding='same', kernel_initializer='he_normal')(x)
-    x = BatchNormalization()(x)
-    x = Activation('relu')(x)
-
-    return x
-
-
-def u_net(input_shape):
-
+def UNet(input_shape, filters=64, blocks=4):
     inputs = Input(input_shape)
 
-    a1 = Conv1(inputs, 16)
-    p1 = MaxPooling2D((2, 2))(a1)
-    a2 = Conv1(p1, 32)
-    p2 = MaxPooling2D((2, 2))(a2)
-    a3 = Conv1(p2, 64)
-    b1 = Conv2(a3, a2, 32)
-    b2 = Conv2(b1, a1, 16)
+    x1, EncodingList = Encoding(inputs, filters, blocks)
 
-    outputs = Conv2D(1, (1, 1), activation='sigmoid')(b2)
+    x2 = Decoding(x1, EncodingList, filters, blocks)
+
+    outputs = Conv2D(1, (1, 1), activation='softmax')(x2)
 
     model = Model(inputs, outputs)
     return model
 
-
-def test_model():
-    model = u_net((180, 180, 1))
+def TestModel():
+    model = UNet((240, 240, 1))
     model.summary()
 
-# test_model()
-
+TestModel()
 
