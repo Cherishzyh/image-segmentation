@@ -1,6 +1,6 @@
 from keras.models import Model
 from keras.layers import Input, BatchNormalization, Concatenate, PReLU
-from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose, UpSampling2D
+from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose
 import numpy as np
 
 
@@ -40,20 +40,20 @@ def Decoding(inputs_1, inputs_2, filters=64, blocks=4):
     return x
 
 
-def UNet(input_shape, filters=64, blocks=4):
+def UNet(input_shape, filters=64, blocks=4, channel=6):
     inputs = Input(input_shape)
 
     x1, EncodingList = Encoding(inputs, filters, blocks)
 
     x2 = Decoding(x1, EncodingList, filters, blocks)
 
-    outputs = Conv2D(1, (1, 1), activation='softmax')(x2)
+    outputs = Conv2D(channel, (1, 1), activation='softmax')(x2)
 
     model = Model(inputs, outputs)
     return model
 
 def TestModel():
-    model = UNet((240, 240, 1))
+    model = UNet((496, 496, 3))
     model.summary()
 
 TestModel()
