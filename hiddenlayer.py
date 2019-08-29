@@ -61,20 +61,14 @@ def SaveFeatureMap(model, one_data, feature_map_root_folder):
             plt.axis('off')
             plt.imsave(one_specific_layer_path, layer_output[0, :, :], format="png", cmap='gray')
 
-
-# test_data_folder = r'H:/data/TZ roi/data/Validation/Chen ren geng/t2.nii'
-# picture_path = r'H:/data/TZ roi/data/Validation/Chen ren geng/hidden'
-import numpy as np
-from saveandload import ReadModel
-from data import GetData
-imagepath = r'H:/data/TZ roi/h5/validation'
-path = r'C:/Users/I/Desktop/hidden'
-model_path = r'H:/SuccessfulModel/ProstateSegmentTrumpetNet/model.yaml'
-best_weights_path = r'H:/SuccessfulModel/ProstateSegmentTrumpetNet/weights.h5'
-image_array, _ = GetData(imagepath)
-inputs = []
-inputs.append(image_array[[17], ...])
-inputs.append(image_array[[18], ...])
-inputs.append(image_array[[19], ...])
-model = ReadModel(model_path, best_weights_path)
-SaveFeatureMap(model, inputs, path)
+def Test():
+    from saveandload import ReadModel
+    testing_folder = r'D:\data\Challenge\Map3_256\DivideData512\Test'
+    path = r'C:/Users/I/Desktop/hidden'
+    model_path = r'D:\data\Challenge\Map3_256\model\model.yaml'
+    best_weights_path = r'HD:\data\Challenge\Map3_256\model\best_weights.h5'
+    from CNNModel.Training.Generate import ImageInImageOut2DTest
+    input_list, output_list, pred_list = ImageInImageOut2DTest(testing_folder, input_shape=(496, 496, 3))
+    model = ReadModel(model_path, best_weights_path)
+    SaveFeatureMap(model, pred_list, path)
+Test()

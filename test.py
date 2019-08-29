@@ -1,5 +1,5 @@
-from ImageSegmentation.data import GetData
-from ImageSegmentation.saveandload import ReadModel
+from data import GetData
+from saveandload import ReadModel
 from filepath import test_data_folder, model_path, best_weights_path
 
 # load test data
