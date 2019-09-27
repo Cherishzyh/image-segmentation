@@ -40,5 +40,5 @@ def AugmentScript():
         # plt.imshow(np.concatenate((Normalize01(augment_t2), Normalize01(augment_roi)), axis=1), cmap='gray')
         # plt.show()
 
-AugmentScript()
+# AugmentScript()
 

@@ -1,6 +1,7 @@
-from CNNModel.training.Generate import ImageInImageOut2D
+from CNNModel.CNNModel.Training.Generate import ImageInImageOut2D
 from MeDIT.DataAugmentor import random_2d_augment
 import numpy as np
+
 
 generate = ImageInImageOut2D(r'C:\Users\yangs\Desktop\TZ roi\FormatH5', (240, 240), batch_size=1, augment_param=random_2d_augment)
 for inputs, outputs in generate:

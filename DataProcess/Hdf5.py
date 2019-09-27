@@ -67,11 +67,15 @@ def ReResolution(data_folder):
         print(i)
 
 
+#######################################################
+
+
 def TestShowHist(dataarray, title):
     plt.hist(dataarray.flatten(), bins=50)
     plt.title(title)
     plt.show()
     return 0
+
 
 def TestShowRoiHist(data_folder):
     file_list = os.listdir(data_folder)
@@ -85,8 +89,9 @@ def TestShowRoiHist(data_folder):
         roi_image, _, roi = LoadNiiData(roi_path, dtype=np.float32)
         roi_resample_image, _, roi_resample = LoadNiiData(roi_resample_path, dtype=np.uint8)
 
-        ShowHist(roi, 'roi')
-        ShowHist(roi_resample, 'roi_resample_try')
+        # ShowHist(roi, 'roi')
+        # ShowHist(roi_resample, 'roi_resample_try')
+
 
 def TestShowRoiImage(data_folder):
     file_list = os.listdir(data_folder)
@@ -109,9 +114,3 @@ def TestShowRoiImage(data_folder):
 
         plt.axis('off')
         plt.show()
-
-data_folder = r'H:/data/TZ roi/data/Train'
-save_path = r'H:/data/data/train'
-# roi_image, _, roi = LoadNiiData(r'H:\data\TZ roi\data\Validation\Chen ren geng\t2.nii', dtype=np.float32, is_show_info=True)
-ReResolution(data_folder)
-writeh5(data_folder, save_path)

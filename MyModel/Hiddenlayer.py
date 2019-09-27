@@ -61,8 +61,9 @@ def SaveFeatureMap(model, one_data, feature_map_root_folder):
             plt.axis('off')
             plt.imsave(one_specific_layer_path, layer_output[0, :, :], format="png", cmap='gray')
 
-def Test():
-    from saveandload import ReadModel
+
+def main():
+    from MyModel.SaveAndLoad import ReadModel
     testing_folder = r'D:\data\Challenge\Map3_256\DivideData512\Test'
     path = r'C:/Users/I/Desktop/hidden'
     model_path = r'D:\data\Challenge\Map3_256\model\model.yaml'
@@ -71,4 +72,7 @@ def Test():
     input_list, output_list, pred_list = ImageInImageOut2DTest(testing_folder, input_shape=(496, 496, 3))
     model = ReadModel(model_path, best_weights_path)
     SaveFeatureMap(model, pred_list, path)
-Test()
+
+
+if __name__ == '__main':
+    main()

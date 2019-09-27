@@ -12,10 +12,9 @@ def GetData(data_folder):
         file_path = os.path.join(data_folder, file)
 
         # data read
-        h5_file = h5py.File(file_path, 'r')
-        image = np.asarray(h5_file['input_0'], dtype=np.float32)
-        label = np.asarray(h5_file['output_0'], dtype=np.uint8)
-        h5_file.close()
+        with h5py.File(file_path, 'r') as h5_file:
+            image = np.asarray(h5_file['input_0'], dtype=np.float32)
+            label = np.asarray(h5_file['output_0'], dtype=np.uint8)
 
         image_list.append(image)
         label_list.append(label)
@@ -33,10 +32,9 @@ def GeneratorData(data_folder, batch_size):
             file_path = os.path.join(data_folder, file)
 
             # data read
-            h5_file = h5py.File(file_path, 'r')
-            image = np.asarray(h5_file['input_0'], dtype=np.float32)
-            label = np.asarray(h5_file['output_0'], dtype=np.uint8)
-            h5_file.close()
+            with h5py.File(file_path, 'r') as h5_file:
+                image = np.asarray(h5_file['input_0'], dtype=np.float32)
+                label = np.asarray(h5_file['output_0'], dtype=np.uint8)
 
             image_list.append(image)
             label_list.append(label)
@@ -46,7 +44,5 @@ def GeneratorData(data_folder, batch_size):
                 image_list = []
                 label_list = []
 
-# data_folder = r'H:/data/TZ roi/h5/train'
-# GetData(data_folder)
 
 

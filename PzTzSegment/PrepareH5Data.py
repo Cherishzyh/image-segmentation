@@ -4,6 +4,7 @@ from MeDIT.SaveAndLoad import LoadNiiData, SaveNiiImage
 from MeDIT.ImageProcess import GetImageFromArrayByImage
 from MeDIT.Others import CopyFile
 
+
 def ExtractTargetFile():
     source_root = r'C:\Users\yangs\Desktop\TZ roi\raw'
     dest_root = r'C:\Users\yangs\Desktop\TZ roi\store_format'

@@ -52,9 +52,13 @@ def UNet(input_shape, filters=64, blocks=4, channel=6):
     model = Model(inputs, outputs)
     return model
 
-def TestModel():
+
+def main():
     model = UNet((496, 496, 3))
     model.summary()
 
-TestModel()
+
+if __name__ == '__main__':
+    main()
+
 

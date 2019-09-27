@@ -1,12 +1,12 @@
-from MeDIT.SaveAndLoad import LoadNiiData
-from MeDIT.Visualization import Imshow3DArray, DrawBoundaryOfBinaryMask
-from MeDIT.Normalize import Normalize01
-import numpy as np
-from MeDIT.DataAugmentor import DataAugmentor2D, AugmentParametersGenerator
-import matplotlib.pyplot as plt
-import os
-from keras.utils import to_categorical
 import h5py
+import os
+
+import numpy as np
+from keras.utils import to_categorical
+
+from MeDIT.DataAugmentor import DataAugmentor2D, AugmentParametersGenerator
+
+
 
 '''数据预处理流程：.nii→改分辨率→保存为.h5→进行数据增强，图片剪裁，onehot编码→generator'''
 
@@ -68,14 +68,13 @@ def AugmentTrain(train_folder, batch_size):
         image_list.append(cropaugmentImage)
         label_list.append(augment_roi_onehot)
 
-
         if len(image_list) >= batch_size:
-            return np.asarray(image_list), np.asarray(label_list)
-            # image_list = []
-            # label_list = []
+            yield np.asarray(image_list), np.asarray(label_list)
+            image_list = []
+            label_list = []
 
 
-path = r'H:\data\data\validation'
-AugmentTrain(path, batch_size=16)
+# path = r'H:\data\data\validation'
+# AugmentTrain(path, batch_size=16)
 
 

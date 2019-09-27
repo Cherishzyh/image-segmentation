@@ -1,5 +1,6 @@
-from keras.models import model_from_yaml
 import os
+
+from keras.models import model_from_yaml
 
 
 def SaveModel(model, store_folder):
