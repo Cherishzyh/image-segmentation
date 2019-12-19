@@ -19,7 +19,7 @@ def GetData(data_folder):
         image_list.append(image)
         label_list.append(label)
 
-    return np.asarray(image_list), np.asarray(label_list)
+    return np.asarray(image_list), np.asarray(label_list), file_list
 
 
 def GeneratorData(data_folder, batch_size):
@@ -45,4 +45,10 @@ def GeneratorData(data_folder, batch_size):
                 label_list = []
 
 
+def main():
+    data_folder = r'D:\ZYH\Data\TZ roi\TypeOfData\FormatH5\Problem'
+    image, label, file_list = GetData(data_folder)
 
+
+if __name__ == '__main__':
+    main()

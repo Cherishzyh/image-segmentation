@@ -63,7 +63,7 @@ def SaveFeatureMap(model, one_data, feature_map_root_folder):
 
 
 def main():
-    from MyModel.SaveAndLoad import ReadModel
+    from Train.SaveAndLoad import ReadModel
     testing_folder = r'D:\data\Challenge\Map3_256\DivideData512\Test'
     path = r'C:/Users/I/Desktop/hidden'
     model_path = r'D:\data\Challenge\Map3_256\model\model.yaml'

@@ -1,4 +1,4 @@
-from Model.UNet import UNet
+from MyModel.UNet import UNet
 from CNNModel.Utility.SaveAndLoad import SaveModel
 
 from keras.models import Model
@@ -18,7 +18,12 @@ def TransModel(input_shape):
     new_model.summary()
 
 
-TransModel((448, 448, 3))
+def main():
+    TransModel((448, 448, 3))
+
+
+if __name__ == '__main__':
+    main()
 
 
 

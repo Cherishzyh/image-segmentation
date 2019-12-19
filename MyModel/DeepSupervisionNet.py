@@ -1,7 +1,8 @@
+import numpy as np
+
 from keras.models import Model
 from keras.layers import Input, BatchNormalization, Concatenate, PReLU
 from keras.layers import Conv2D, MaxPooling2D, Conv2DTranspose
-import numpy as np
 
 
 def Encoding(inputs, filters=64, blocks=4):
@@ -23,8 +24,9 @@ def Encoding(inputs, filters=64, blocks=4):
     return x, outputs
 
 
-def Decoding(inputs_1, inputs_2, filters=64, blocks=4):
+def Decoding_Deep_Supervision(inputs_1, inputs_2, filters=64, blocks=4, channel=3):
     x = inputs_1
+    output_list = []
     for index in np.arange(blocks - 2, -1, -1):
         x = Conv2DTranspose(filters * np.power(2, index), kernel_size=(2, 2), strides=(2, 2), padding='same')(x)
         x = Concatenate(axis=3)([x, inputs_2[index]])
@@ -37,28 +39,25 @@ def Decoding(inputs_1, inputs_2, filters=64, blocks=4):
         x = BatchNormalization()(x)
         x = PReLU()(x)
 
-    return x
+        output = Conv2D(channel, (1, 1), activation='softmax')(x)
+        output_list.append(output)
+
+    output_list.reverse()
+
+    return output_list
 
 
-def UNet(input_shape, filters=64, blocks=3, channel=3):
+def DSUNet(input_shape, filters=64, blocks=4):
     inputs = Input(input_shape)
 
     x1, EncodingList = Encoding(inputs, filters, blocks)
 
-    x2 = Decoding(x1, EncodingList, filters, blocks)
+    x2 = Decoding_Deep_Supervision(x1, EncodingList, filters, blocks)
 
-    outputs = Conv2D(channel, (1, 1), activation='softmax')(x2)
-
-    model = Model(inputs, outputs)
+    model = Model(inputs, x2)
     return model
 
 
-def main():
-    model = UNet((300, 300, 3))
-    model.summary()
 
-
-if __name__ == '__main__':
-    main()
 
 

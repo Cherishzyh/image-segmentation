@@ -4,7 +4,14 @@ import os
 from MeDIT.SaveAndLoad import LoadNiiData
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
-from NiiProcess.Resampler import Resampler
+# from NiiProcess.Resampler import Resampler
+
+
+def ReadH5(file_path):
+    with h5py.File(file_path, 'r') as h5_file:
+        image = np.asarray(h5_file['input_0'], dtype=np.float32)
+        label = np.asarray(h5_file['output_0'], dtype=np.uint8)
+    return image, label
 
 
 def writeh5(data_folder, save_path):
@@ -114,3 +121,5 @@ def TestShowRoiImage(data_folder):
 
         plt.axis('off')
         plt.show()
+
+
